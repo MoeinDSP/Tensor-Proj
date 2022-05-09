@@ -9,13 +9,14 @@ Original file is located at
 
 import tensorflow as tf 
 from tensorflow import keras
+import numpy as np
 
 pip install matplotlib
 
 pip install pandas
 
 import matplotlib.pyplot as plt
-
+## classification 
 fmnist_data = keras.datasets.fashion_mnist
 
 (x_train, y_train), (x_test, y_test) = fmnist_data.load_data()
@@ -49,11 +50,33 @@ bias
 
 model.compile(loss="sparse_categorical_crossentropy",
               optimizer="sgd",
-              metrics=["accuracy"])
+              metrics=["accuracy","MeanSquaredError"])
 
 #3 - Fit Model
 
 pip install epochs
 
 history = model.fit(x_train, y_train, epochs=50, validation_split=0.15)
+print(history.history)
+
+
+fig, ax = plt.subplots(figsize=(12,5))
+ax.plot(history.history["loss"], label="train loss")
+ax.plot(history.history["accuracy"], label="train accuracy")
+ax.plot(history.history["val_loss"], label="validation loss")
+ax.plot(history.history["val_accuracy"], label="validation accuracy")
+ax.legend()
+
+
+#as a evaluate 
+model.evaluate(x_test, y_test, verbose=0)
+
+
+x3 = x_test[1:3] #To take 2 images 
+x3.shape
+
+model.predict(x3).round(3) #round(3) baraye 3 raghme ashar hast model shomare 3 ro khaste bodim ghavi tarin meghdar ro dade
+
+np.argmax(model.predict(x3).round(3), axis=1)
+
 
